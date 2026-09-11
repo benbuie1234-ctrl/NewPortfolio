@@ -35,7 +35,7 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2064%2064%22%3E%3Crect%20width%3D%2264%22%20height%3D%2264%22%20rx%3D%2214%22%20fill%3D%22%23050505%22%2F%3E%3Cpath%20d%3D%22M26%2020%20L26%2044%20L46%2032%20Z%22%20fill%3D%22%2325c281%22%20stroke%3D%22%2325c281%22%20stroke-width%3D%224%22%20stroke-linejoin%3D%22round%22%20stroke-linecap%3D%22round%22%2F%3E%3C%2Fsvg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,200..900;1,200..900&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 
@@ -53,13 +53,24 @@
     --green: #116c42;
     --green-lt: #25c281;
     --green-dim: rgba(37,194,129,0.12);
+    --red-dim: rgba(224,103,95,0.12);
+
+    /* primary CTA — exact radial gradient + glossy inset stack */
+    --cta: radial-gradient(50% 150%, #f21d1d 0%, rgba(255,0,0,.9) 99.99%, rgba(255,0,0,.7) 99.99%, #ff1212 100%);
+    --cta-shadow:
+      rgba(255,255,255,.25) 0 1px 0 0 inset,
+      rgba(0,0,0,.34) 0 -1px 0 0 inset,
+      rgba(255,255,255,.08) 0 4px 24px 0,
+      rgba(0,0,0,.25) 0 1px 3px 0;
 
     --font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-ui: 'Poppins', 'Hanken Grotesk', sans-serif;
+    --nav: #7b7c8c;
     --wrap: 1120px;
     --r-pill: 999px;
     --r-card: 18px;
-    --r-panel: 36px;
-    --hdr-h: 76px;
+    --r-card-lg: 26px;
+    --hdr-h: 86px;
   }
 
   html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
@@ -84,49 +95,56 @@
   .wrap { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
 
   /* ═══ HEADER ═══ */
+  /* Pure blur band — no background fill, no border. Whatever scrolls
+     underneath stays visible but goes soft. */
   .hdr {
     position: fixed; top: 0; left: 0; right: 0; z-index: 90;
     height: var(--hdr-h);
     display: flex; align-items: center;
-    transition: background .3s ease, border-color .3s ease;
-    border-bottom: 1px solid transparent;
+    backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
+    mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
   }
-  .hdr.stuck {
-    background: rgba(5,5,5,.82);
-    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-    border-bottom-color: var(--border);
-  }
+  .hdr > * { -webkit-mask-image: none; mask-image: none; }
   .hdr-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
   .brand { display: flex; align-items: center; gap: 9px; font-weight: 800; letter-spacing: -.02em; font-size: 15px; text-transform: uppercase; }
-  .brand-mark { width: 26px; height: 26px; border-radius: 8px; background: var(--green-lt); display: grid; place-items: center; flex: none; }
-  .brand-mark svg { width: 12px; height: 12px; fill: #041a10; }
+  .brand-mark { width: 26px; height: 26px; border-radius: 8px; background: #fff; display: grid; place-items: center; flex: none; }
+  .brand-mark svg { width: 12px; height: 12px; fill: #080808; }
   .hdr-right { display: flex; align-items: center; gap: 10px; }
 
-  .nav-links { display: flex; align-items: center; gap: 26px; }
-  .nav-links a { font-size: 14px; color: var(--muted-2); font-weight: 500; transition: color .2s; }
+  .nav-links { display: flex; align-items: center; gap: 44px; }
+  .nav-links a { font-family: var(--font-ui); font-size: 16px; color: var(--nav); font-weight: 400; transition: color .2s; }
   .nav-links a:hover { color: var(--text); }
   @media (max-width: 900px) { .nav-links { display: none; } }
 
   /* ═══ BUTTONS ═══ */
   .btn {
-    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-    background: var(--green-lt); color: #04180e;
-    font-weight: 700; font-size: 14px; letter-spacing: -.01em;
-    padding: 11px 20px; border: 0; border-radius: var(--r-pill); cursor: pointer;
-    transition: transform .18s cubic-bezier(.2,.8,.3,1), box-shadow .18s, background .18s;
-    box-shadow: 0 0 0 1px rgba(255,255,255,.07) inset, 0 6px 22px rgba(37,194,129,.22);
-    white-space: nowrap;
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+    background-color: transparent; background-image: var(--cta); color: #fff;
+    font-family: var(--font-ui); font-weight: 600; font-size: 18px; letter-spacing: 0;
+    padding: 14px 30px; border: 0; border-radius: 29px; cursor: pointer;
+    box-shadow: var(--cta-shadow);
+    transition: transform .18s cubic-bezier(.2,.8,.3,1), filter .18s;
+    white-space: nowrap; line-height: 1.6;
   }
-  .btn:hover { transform: translateY(-2px); background: #35d692; box-shadow: 0 0 0 1px rgba(255,255,255,.12) inset, 0 10px 30px rgba(37,194,129,.34); }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.08); }
   .btn:active { transform: translateY(0); }
-  .btn-lg { font-size: 17px; padding: 17px 34px; }
-  .btn-dark { background: #fff; color: #080808; box-shadow: 0 6px 22px rgba(0,0,0,.4); }
-  .btn-dark:hover { background: #fff; }
-  .btn-ghost {
-    background: rgba(255,255,255,.05); color: var(--text);
-    box-shadow: 0 0 0 1px var(--border-str) inset;
+  .btn-lg { font-size: 18px; padding: 16px 34px; }
+
+  /* header pill — frosted glass, not a colour fill */
+  .btn-glass {
+    background-color: transparent;
+    background-image: linear-gradient(rgba(255,255,255,.18) 0%, rgba(255,255,255,.04) 100%);
+    border: 1px solid rgba(255,255,255,.22);
+    border-radius: 36px;
+    backdrop-filter: blur(16px) saturate(1.2); -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    box-shadow: rgba(0,0,0,.1) 0 6px 18px 0;
+    color: #fff; font-size: 14px; font-weight: 500; padding: 12px 22px;
   }
-  .btn-ghost:hover { background: rgba(255,255,255,.1); box-shadow: 0 0 0 1px var(--border-str) inset; }
+  .btn-glass:hover { filter: none; background-image: linear-gradient(rgba(255,255,255,.26) 0%, rgba(255,255,255,.08) 100%); }
+
+  .btn-dark { background-image: none; background-color: #fff; color: #080808; box-shadow: 0 6px 22px rgba(0,0,0,.4); }
+  .btn-dark:hover { filter: brightness(.96); }
 
   .burger { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.06); box-shadow: 0 0 0 1px var(--border) inset; display: none; place-items: center; cursor: pointer; flex: none; }
   .burger span { display: block; width: 16px; height: 1.6px; background: var(--text); border-radius: 2px; }
@@ -136,14 +154,17 @@
   /* ═══ SHARED SECTION FURNITURE ═══ */
   section { position: relative; }
   .sec { padding: clamp(72px, 11vw, 130px) 0; }
+  /* on dark: no pill at all — just letterspaced 11px at 50% white */
   .eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
-    font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--muted-2);
-    background: rgba(255,255,255,.05); box-shadow: 0 0 0 1px var(--border) inset;
-    padding: 7px 15px; border-radius: var(--r-pill);
+    font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase;
+    color: rgba(255,255,255,.5);
   }
-  .eyebrow.on-green { background: rgba(255,255,255,.14); box-shadow: 0 0 0 1px rgba(255,255,255,.2) inset; color: #eafff4; }
+  /* on the green panel: solid white pill, black text */
+  .eyebrow.on-green {
+    background: #fff; color: #000; font-weight: 500;
+    padding: 7px 18px; border-radius: var(--r-pill);
+  }
   .sec-head { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 18px; margin-bottom: clamp(36px, 5vw, 58px); }
   .h2 {
     font-size: clamp(32px, 5.4vw, 56px); font-weight: 700;
@@ -183,9 +204,9 @@
   .hero-sub { color: var(--muted-2); font-size: clamp(15px, 1.9vw, 19px); max-width: 620px; margin: 26px auto 0; line-height: 1.5; }
   .hero-cta { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
 
-  .reassure { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; font-size: 13px; color: var(--muted); }
+  .reassure { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; font-family: var(--font-ui); font-size: 13px; color: var(--muted); }
   .reassure span { display: inline-flex; align-items: center; gap: 7px; }
-  .reassure svg { width: 13px; height: 13px; stroke: var(--green-lt); stroke-width: 3; fill: none; flex: none; }
+  .reassure svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 3; fill: none; flex: none; opacity: .75; }
 
   /* hero showreel */
   .reel-wrap { margin-top: clamp(42px, 6vw, 66px); position: relative; }
@@ -230,30 +251,23 @@
   .cr-chip img { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex: none; }
 
   /* ═══ GREEN PANEL ═══ */
+  /* Full-bleed, square corners. Texture is a double grid: fine 40px lines
+     at 5.5% over coarse 200px lines at 18%, plus a soft radial lift. */
   .green-panel {
-    background: var(--green);
-    border-radius: var(--r-panel);
-    margin: 0 auto; max-width: calc(var(--wrap) + 80px);
-    padding: clamp(52px, 7vw, 96px) 0;
-    position: relative; overflow: hidden;
-  }
-  .green-panel::before {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background-color: var(--green);
     background-image:
-      linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
-    background-size: 58px 58px;
-    -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 25%, transparent 82%);
-    mask-image: radial-gradient(ellipse 80% 70% at 50% 40%, #000 25%, transparent 82%);
-  }
-  .green-panel::after {
-    content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse 70% 60% at 50% 120%, rgba(0,0,0,.4), transparent 70%);
+      radial-gradient(rgba(255,255,255,.07) 0%, rgba(0,0,0,0) 70%),
+      repeating-linear-gradient(rgba(255,255,255,.055) 0px, rgba(255,255,255,.055) 1px, rgba(0,0,0,0) 1px, rgba(0,0,0,0) 100%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.055) 0px, rgba(255,255,255,.055) 1px, rgba(0,0,0,0) 1px, rgba(0,0,0,0) 100%),
+      repeating-linear-gradient(rgba(255,255,255,.18) 0px, rgba(255,255,255,.18) 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 100%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,.18) 0px, rgba(255,255,255,.18) 2px, rgba(0,0,0,0) 2px, rgba(0,0,0,0) 100%);
+    background-size: 100% 100%, 40px 40px, 40px 40px, 200px 200px, 200px 200px;
+    padding: clamp(56px, 7vw, 100px) 0;
+    position: relative; overflow: clip;
   }
   .green-panel > * { position: relative; z-index: 1; }
   .green-panel .sub { color: rgba(255,255,255,.72); }
-  .panel-outer { padding: 0 20px; }
-  @media (max-width: 700px) { .green-panel { border-radius: 26px; } .panel-outer { padding: 0 12px; } }
+  .panel-outer { padding: 0; }
 
   /* chips / tabs */
   .chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 36px; }
@@ -367,15 +381,25 @@
   /* ═══ WHO FOR ═══ */
   .who { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
   @media (max-width: 820px) { .who { grid-template-columns: 1fr; max-width: 520px; margin: 0 auto; } }
-  .who-col { background: var(--card); border-radius: var(--r-panel); box-shadow: 0 0 0 1px var(--border) inset; padding: clamp(26px, 3.4vw, 40px); }
-  .who-col.yes { background: linear-gradient(180deg, rgba(37,194,129,.075), rgba(19,19,19,1) 62%); box-shadow: 0 0 0 1px rgba(37,194,129,.22) inset; }
-  .who-col h3 { font-size: clamp(21px, 2.6vw, 27px); font-weight: 700; letter-spacing: -.028em; margin-bottom: 22px; }
-  .who-list { display: flex; flex-direction: column; gap: 16px; }
-  .who-list li { list-style: none; display: flex; gap: 12px; font-size: 15px; color: var(--muted-2); line-height: 1.5; }
-  .who-ic { width: 21px; height: 21px; border-radius: 50%; flex: none; display: grid; place-items: center; margin-top: 1px; }
-  .who-ic svg { width: 11px; height: 11px; stroke-width: 3.2; fill: none; }
+  .who-col {
+    background: rgba(255,255,255,.04);
+    border-radius: var(--r-card-lg);
+    padding: clamp(26px, 3.4vw, 38px);
+  }
+  .who-col h3 { font-size: clamp(21px, 2.6vw, 26px); font-weight: 600; letter-spacing: -.03em; margin-bottom: 26px; }
+  .who-list { display: flex; flex-direction: column; gap: 18px; }
+  .who-list li { list-style: none; display: flex; align-items: flex-start; gap: 15px; font-size: 14px; color: rgba(255,255,255,.82); line-height: 1.6; }
+  .who-tx { flex: 1; min-width: 0; }
+  .who-list b { font-weight: 600; color: #fff; }
+  /* 46px rounded-square tiles, tinted green or red, with a drop shadow */
+  .who-ic {
+    width: 46px; height: 46px; border-radius: 12px; flex: none;
+    display: grid; place-items: center;
+    box-shadow: rgba(0,0,0,.35) 0 2px 8px 0;
+  }
+  .who-ic svg { width: 15px; height: 15px; stroke-width: 3; fill: none; }
   .yes .who-ic { background: var(--green-dim); } .yes .who-ic svg { stroke: var(--green-lt); }
-  .no .who-ic { background: rgba(255,255,255,.06); } .no .who-ic svg { stroke: #6e6e6e; }
+  .no .who-ic { background: var(--red-dim); } .no .who-ic svg { stroke: #e0675f; }
 
   /* ═══ THUMBNAILS ═══ */
   .th-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
@@ -393,7 +417,7 @@
   .cta-panel { text-align: center; position: relative; overflow: hidden; }
   .cta-panel::before {
     content: ''; position: absolute; inset: 0; pointer-events: none;
-    background: radial-gradient(ellipse 760px 400px at 50% 108%, rgba(37,194,129,.2), transparent 68%);
+    background: radial-gradient(ellipse 760px 400px at 50% 108%, rgba(242,29,29,.16), transparent 68%);
   }
   .cta-panel .wrap { position: relative; }
   .cta-h {
@@ -468,7 +492,7 @@
       <a href="#reviews">Reviews</a>
     </nav>
     <div class="hdr-right">
-      <button class="btn js-cta" type="button">Book a call</button>
+      <button class="btn btn-glass js-cta" type="button">Book a call</button>
       <div class="burger" id="burger" role="button" tabindex="0" aria-label="Menu"><span></span><span></span><span></span></div>
     </div>
   </div>
@@ -780,19 +804,19 @@
       <div class="who-col yes">
         <h3>This is for you if…</h3>
         <ul class="who-list">
-          <li><span class="who-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> You're posting short-form consistently and editing is the bottleneck.</li>
-          <li><span class="who-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> You'd rather spend your hours filming and talking to your audience than in a timeline.</li>
-          <li><span class="who-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> You want one editor who learns your style instead of a new freelancer every month.</li>
-          <li><span class="who-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span> You need short-form, long-form and thumbnails handled by the same person.</li>
+          <li><span class="who-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="who-tx">You're posting short-form consistently and <b>editing is the bottleneck</b>.</span></li>
+          <li><span class="who-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="who-tx">You'd rather <b>spend your hours filming</b> and talking to your audience than in a timeline.</span></li>
+          <li><span class="who-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="who-tx">You want <b>one editor who learns your style</b> instead of a new freelancer every month.</span></li>
+          <li><span class="who-ic"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span><span class="who-tx">You need <b>short-form, long-form and thumbnails</b> handled by the same person.</span></li>
         </ul>
       </div>
       <div class="who-col no">
         <h3>This isn't for you if…</h3>
         <ul class="who-list">
-          <li><span class="who-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> You want the cheapest editor you can find rather than the right one.</li>
-          <li><span class="who-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> You already have an in-house editor who knows your style cold.</li>
-          <li><span class="who-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> You enjoy editing and have no intention of handing it off.</li>
-          <li><span class="who-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span> You're not filming yet — get some footage first, then come back.</li>
+          <li><span class="who-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span class="who-tx">You want <b>the cheapest editor</b> you can find rather than the right one.</span></li>
+          <li><span class="who-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span class="who-tx">You already have an <b>in-house editor</b> who knows your style cold.</span></li>
+          <li><span class="who-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span class="who-tx"><b>You enjoy editing</b> and have no intention of handing it off.</span></li>
+          <li><span class="who-ic"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span><span class="who-tx"><b>You're not filming yet</b> — get some footage first, then come back.</span></li>
         </ul>
       </div>
     </div>
@@ -1097,12 +1121,6 @@
   });
   window.addEventListener('resize', syncArrows);
   syncArrows();
-
-  /* ─── header shadow ─── */
-  var hdr = document.getElementById('hdr');
-  function onScroll() { hdr.classList.toggle('stuck', window.scrollY > 20); }
-  window.addEventListener('scroll', onScroll, { passive: true });
-  onScroll();
 
   /* ─── marquee: duplicate the chips so the loop is seamless ─── */
   var track = document.getElementById('marq-track');
