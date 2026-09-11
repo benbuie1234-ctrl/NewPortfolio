@@ -74,7 +74,7 @@
     --font: 'Hanken Grotesk', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
     --font-ui: 'Poppins', 'Hanken Grotesk', sans-serif;
     --nav: #7b7c8c;
-    --wrap: 1120px;
+    --wrap: 1056px;
     --r-pill: 999px;
     --r-card: 18px;
     --r-card-lg: 26px;
@@ -124,11 +124,11 @@
     mask-image: linear-gradient(180deg, #000 0%, #000 72%, transparent 100%);
   }
   .hdr > * { -webkit-mask-image: none; mask-image: none; }
-  .hdr-in { display: flex; align-items: center; justify-content: space-between; gap: 12px; width: 100%; }
+  .hdr-in { display: flex; align-items: center; gap: 56px; width: 100%; }
   .brand { display: flex; align-items: center; gap: 9px; font-weight: 800; letter-spacing: -.02em; font-size: 15px; text-transform: uppercase; }
   .brand-mark { width: 26px; height: 26px; border-radius: 8px; background: #fff; display: grid; place-items: center; flex: none; }
   .brand-mark svg { width: 12px; height: 12px; fill: #080808; }
-  .hdr-right { display: flex; align-items: center; gap: 10px; }
+  .hdr-right { display: flex; align-items: center; gap: 10px; margin-left: auto; }
 
   .nav-links { display: flex; align-items: center; gap: 44px; }
   .nav-links a { font-family: var(--font-ui); font-size: 16px; color: var(--nav); font-weight: 400; transition: color var(--dur) var(--ease); }
@@ -193,7 +193,7 @@
   .sub { color: var(--text-70); font-size: 16px; max-width: 560px; line-height: 1.55; }
 
   /* ═══ HERO ═══ */
-  .hero { padding: calc(var(--hdr-h) + clamp(44px, 8vw, 90px)) 0 clamp(60px, 8vw, 96px); text-align: center; overflow: hidden; }
+  .hero { padding: calc(var(--hdr-h) + 21px) 0 60px; text-align: center; overflow: hidden; }
   .hero::before {
     content: ''; position: absolute; inset: -30% 0 auto; height: 780px; pointer-events: none;
     background:
@@ -201,7 +201,7 @@
       radial-gradient(ellipse 620px 380px at 78% 8%, rgba(37,194,129,.07), transparent 70%);
   }
   .hero .wrap { position: relative; }
-  .hero-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 30px; }
+  .hero-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-bottom: 44px; }
   .badge {
     display: inline-flex; align-items: center; gap: 8px;
     background: rgba(255,255,255,.055); box-shadow: 0 0 0 1px var(--border) inset;
@@ -213,21 +213,21 @@
   .stars { letter-spacing: 1px; color: #ffc75a; font-size: 12px; }
 
   .h1 {
-    font-size: clamp(38px, 7.4vw, 82px);
-    font-weight: 700; letter-spacing: -.045em; line-height: 1.02;
-    max-width: 22ch; margin: 0 auto; text-wrap: balance;
+    font-size: clamp(31px, 3.3vw, 47px);
+    font-weight: 700; letter-spacing: -.04em; line-height: 1.05;
+    margin: 0 auto; text-wrap: balance;
   }
-  .h1 .lt { font-weight: 200; }
+  .h1 .lt { font-weight: 300; }
   .h1 .it { font-style: italic; font-weight: 300; }
-  .hero-sub { color: var(--muted-2); font-size: clamp(15px, 1.9vw, 19px); max-width: 620px; margin: 26px auto 0; line-height: 1.5; }
-  .hero-cta { margin-top: 34px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+  .hero-sub { color: var(--text-70); font-size: 15px; max-width: 780px; margin: 34px auto 0; line-height: 1.55; }
+  .hero-cta { margin-top: 8px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
 
   .reassure { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 22px; font-family: var(--font-ui); font-size: 13px; color: var(--muted); }
   .reassure span { display: inline-flex; align-items: center; gap: 7px; }
   .reassure svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 3; fill: none; flex: none; opacity: .75; }
 
   /* hero showreel */
-  .reel-wrap { margin-top: clamp(42px, 6vw, 66px); position: relative; }
+  .reel-wrap { margin-top: 44px; position: relative; }
   .reel-frame {
     position: relative; aspect-ratio: 16/9; border-radius: clamp(16px, 2.4vw, 26px); overflow: hidden;
     cursor: pointer; box-shadow: 0 0 0 1px var(--border) inset, 0 40px 90px -30px rgba(0,0,0,.9);
@@ -235,7 +235,7 @@
   }
   .reel-frame img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s var(--ease), filter var(--dur) var(--ease); }
   .reel-frame:hover img { transform: scale(1.03); filter: brightness(1.06); }
-  .reel-cap { margin-top: 16px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; font-size: 14px; color: var(--muted); }
+  .reel-cap { margin-top: 14px; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 6px 10px; font-size: 13px; color: var(--text-60); }
   .reel-cap a { color: var(--green-lt); font-weight: 600; }
   .reel-cap a:hover { text-decoration: underline; }
 
@@ -527,6 +527,19 @@
       <span class="lt">How to</span> post <span class="it">every day</span><span class="lt">—</span> without editing a single frame.
     </h1>
 
+    <!-- Video sits directly under the headline, as on the reference:
+         show the work before explaining it. -->
+    <div class="reel-wrap">
+      <div class="reel-frame" data-yt="uBOV5DoajLw" role="button" tabindex="0" aria-label="Play the Flywheel VSL edited for @camdencashh">
+        <img decoding="async" fetchpriority="high" src="https://img.youtube.com/vi/uBOV5DoajLw/maxresdefault.jpg" alt="Flywheel VSL edited for Cam's AI automation course">
+        <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="3,2 14,8 3,14"/></svg></div></div>
+      </div>
+      <p class="reel-cap">
+        <strong style="color:var(--text-70);font-weight:600">Flywheel VSL</strong> — a link-in-bio sales video for
+        <a href="https://www.instagram.com/camdencashh" target="_blank" rel="noopener">@camdencashh</a>'s AI automation course.
+      </p>
+    </div>
+
     <p class="hero-sub">
       Short-form, long-form, thumbnails and content management for creators.
       You film it. I cut it, package it and hand it back looking like you — only sharper.
@@ -540,17 +553,6 @@
         <span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> Revisions included</span>
         <span><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg> You keep the project files</span>
       </div>
-    </div>
-
-    <div class="reel-wrap">
-      <div class="reel-frame" data-yt="uBOV5DoajLw" role="button" tabindex="0" aria-label="Play the Flywheel VSL edited for @camdencashh">
-        <img decoding="async" fetchpriority="high" src="https://img.youtube.com/vi/uBOV5DoajLw/maxresdefault.jpg" alt="Flywheel VSL edited for Cam's AI automation course">
-        <div class="play-overlay"><div class="play-btn"><svg viewBox="0 0 16 16"><polygon points="3,2 14,8 3,14"/></svg></div></div>
-      </div>
-      <p class="reel-cap">
-        <strong style="color:var(--text);font-weight:600">Flywheel VSL</strong> — a link-in-bio sales video for
-        <a href="https://www.instagram.com/camdencashh" target="_blank" rel="noopener">@camdencashh</a>'s AI automation course.
-      </p>
     </div>
   </div>
 </section>
@@ -582,7 +584,7 @@
 </section>
 
 <!-- ══════════ GREEN PANEL — THE WORK ══════════ -->
-<section class="sec" id="work">
+<section class="sec" id="work" style="padding:60px 0 0">
   <div class="panel-outer">
   <div class="green-panel">
     <div class="wrap">
