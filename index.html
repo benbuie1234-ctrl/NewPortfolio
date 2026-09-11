@@ -161,8 +161,16 @@
   }
   .btn-glass:hover { filter: none; background-image: linear-gradient(rgba(255,255,255,.26) 0%, rgba(255,255,255,.08) 100%); }
 
-  .btn-dark { background-image: none; background-color: #fff; color: #080808; box-shadow: 0 6px 22px rgba(0,0,0,.4); }
-  .btn-dark:hover { filter: brightness(.96); }
+  .btn-dark {
+    background-image: none; background-color: #fff; color: #000;
+    font-size: 16px; font-weight: 400; letter-spacing: 0; line-height: 1;
+    padding: 15px 36px; border-radius: var(--r-pill);
+    box-shadow: none;
+  }
+  .btn-dark:hover { filter: none; background-color: #f2f2f2; }
+
+  /* reassurance line under a CTA on the green panel */
+  .cta-note { margin-top: 12px; font-size: 13px; color: rgba(255,255,255,.48); }
 
   .burger { width: 40px; height: 40px; border-radius: 12px; background: rgba(255,255,255,.06); box-shadow: 0 0 0 1px var(--border) inset; display: none; place-items: center; cursor: pointer; flex: none; }
   .burger span { display: block; width: 16px; height: 1.6px; background: var(--text); border-radius: 2px; }
@@ -675,8 +683,8 @@
       </div>
 
       <div class="center" style="margin-top:40px">
-        <button class="btn btn-lg btn-dark js-cta" type="button">Book a call →</button>
-        <p style="margin-top:14px;font-size:13px;color:rgba(255,255,255,.6)">Free 15 minutes · No pitch · We'll see if it's a fit</p>
+        <button class="btn btn-dark js-cta" type="button">Book a call →</button>
+        <p class="cta-note">Free 15 minutes · No pitch · We'll see if it's a fit</p>
       </div>
     </div>
   </div>
